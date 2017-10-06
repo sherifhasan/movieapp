@@ -25,4 +25,5 @@
     <string name="reviews">Reviews</string>
     <string name="Favourite">Favourite</string>
     <string name="imagePath">http://image.tmdb.org/t/p/w342/</string>
+    <string name="OK">OK</string>
 </resources>

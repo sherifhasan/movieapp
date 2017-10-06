@@ -4,7 +4,6 @@ import android.content.Intent;
 import android.net.Uri;
 import android.os.AsyncTask;
 import android.os.Bundle;
-import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +16,7 @@ import android.widget.ListView;
 import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
 import com.example.android.movieapp.Adapters.ReviewAdapter;
 import com.example.android.movieapp.Adapters.TrailerAdapter;
@@ -54,7 +54,7 @@ public class DetailFragment extends Fragment {
     boolean checkMovie = true;
     DatabaseHelper db;
     private ScrollView scrollView;
-    int numofseen;
+    int mCurrentPostion;
 
     public DetailFragment() {
 
@@ -123,28 +123,21 @@ public class DetailFragment extends Fragment {
     }
 
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        numofseen++;
-    }
 
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("numofseen", numofseen);
-
+        outState.putInt("currentPosition", mCurrentPostion);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             // Restore last state for checked position.
-            numofseen = savedInstanceState.getInt("numofseen");
+            mCurrentPostion = savedInstanceState.getInt("currentPosition", 0);
         }
     }
-
 
     private void fetchTrailers() {
         FetchTrailer fetchTrailer = new FetchTrailer();
@@ -313,8 +306,7 @@ public class DetailFragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             final String API_param = "api_key";
-            //  final String link = "http://api.themoviedb.org/3/movie/" + movie_object.movie_id + "?";
-// Will contain the raw JSON response as a string.
+
             String movieJsonStr = null;
 
             try {

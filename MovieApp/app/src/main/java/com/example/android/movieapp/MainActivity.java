@@ -1,10 +1,7 @@
 package com.example.android.movieapp;
 
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.net.ConnectivityManager;
-import android.net.NetworkInfo;
 import android.os.Bundle;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -16,24 +13,20 @@ import android.widget.FrameLayout;
 import com.example.android.movieapp.Models.MovieObject;
 import com.example.android.movieapp.utility.PanesHandler;
 
+import static com.example.android.movieapp.utility.Utility.isNetworkConnected;
+
 public class MainActivity extends AppCompatActivity implements PanesHandler {
     boolean twopane;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (!isNetworkAvailable()) {
+        if (!isNetworkConnected(getApplicationContext())) {
             new AlertDialog.Builder(this)
                     .setTitle("No Internet connection")
                     .setMessage("No Internet connection please connect to internet")
-                    .setPositiveButton(android.R.string.yes, new DialogInterface.OnClickListener() {
+                    .setPositiveButton(R.string.OK, new DialogInterface.OnClickListener() {
                         public void onClick(DialogInterface dialog, int which) {
-
-                        }
-                    })
-                    .setNegativeButton(android.R.string.no, new DialogInterface.OnClickListener() {
-                        public void onClick(DialogInterface dialog, int which) {
-                            // do nothing
                         }
                     })
                     .setIcon(android.R.drawable.ic_dialog_alert)
@@ -55,12 +48,6 @@ public class MainActivity extends AppCompatActivity implements PanesHandler {
 
     }
 
-    private boolean isNetworkAvailable() {
-        ConnectivityManager connectivityManager
-                = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
-        NetworkInfo activeNetworkInfo = connectivityManager.getActiveNetworkInfo();
-        return activeNetworkInfo != null && activeNetworkInfo.isConnected();
-    }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {

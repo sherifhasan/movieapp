@@ -53,7 +53,7 @@ public class MainActivityFragment extends Fragment {
     ImageAdapter image_adapter;
     DatabaseHelper db;
     PanesHandler panesHandler;
-    int numofseen;
+    int mCurrentPostion;
 
     public MainActivityFragment() {
     }
@@ -125,11 +125,6 @@ public class MainActivityFragment extends Fragment {
         }
     }
 
-    @Override
-    public void onResume() {
-        super.onResume();
-        numofseen++;
-    }
 
     @Override
     public void onStart() {
@@ -141,16 +136,15 @@ public class MainActivityFragment extends Fragment {
     @Override
     public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("numofseen", numofseen);
-
+        outState.putInt("currentPosition", mCurrentPostion);
     }
 
     @Override
-    public void onActivityCreated(@Nullable Bundle savedInstanceState) {
+    public void onActivityCreated(Bundle savedInstanceState) {
         super.onActivityCreated(savedInstanceState);
         if (savedInstanceState != null) {
             // Restore last state for checked position.
-            numofseen = savedInstanceState.getInt("numofseen");
+            mCurrentPostion = savedInstanceState.getInt("currentPosition", 0);
         }
     }
 
