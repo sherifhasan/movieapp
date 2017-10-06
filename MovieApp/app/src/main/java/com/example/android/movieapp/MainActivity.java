@@ -13,6 +13,9 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.FrameLayout;
 
+import com.example.android.movieapp.Models.MovieObject;
+import com.example.android.movieapp.utility.PanesHandler;
+
 public class MainActivity extends AppCompatActivity implements PanesHandler {
     boolean twopane;
 
@@ -83,7 +86,7 @@ public class MainActivity extends AppCompatActivity implements PanesHandler {
     }
 
     @Override
-    public void setSelectedName(Movie_Details movie) {
+    public void setSelectedName(MovieObject movie) {
         if (twopane) {
             // In two-pane mode, show the detail view in this activity by
             // adding or replacing the detail fragment using a

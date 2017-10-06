@@ -1,22 +1,20 @@
-package com.example.android.movieapp;
+package com.example.android.movieapp.Models;
 
 import java.io.Serializable;
 
-/**
- * Created by Sherif on 4/18/2016.
- */
-public class Movie_Details implements Serializable {
-    public String overview;
-    public String release_date;
-    public String movie_id;
-    public String poster_path;
-    public String title;
-    public String vote_average;
 
-    public Movie_Details() {
+public class MovieObject implements Serializable{
+    private String overview;
+    private String release_date;
+    private String movie_id;
+    private String poster_path;
+    private String title;
+    private String vote_average;
+
+    public MovieObject() {
     }
 
-    public Movie_Details(String movie_id, String poster_path, String title, String vote_average, String release_date, String overview) {
+    public MovieObject(String movie_id, String poster_path, String title, String vote_average, String release_date, String overview) {
         this.poster_path = poster_path;
         this.title = title;
         this.vote_average = vote_average;
@@ -73,8 +71,3 @@ public class Movie_Details implements Serializable {
         this.vote_average = vote_average;
     }
 }
-
-
-
-
-

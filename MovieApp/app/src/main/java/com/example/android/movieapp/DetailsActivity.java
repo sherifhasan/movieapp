@@ -4,8 +4,10 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 
+import com.example.android.movieapp.Models.MovieObject;
+
 public class DetailsActivity extends AppCompatActivity {
-    private Movie_Details movie;
+    private MovieObject movie;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -14,8 +16,8 @@ public class DetailsActivity extends AppCompatActivity {
         if (null == savedInstanceState) {
             Bundle extras = getIntent().getExtras();
 
-            movie = (Movie_Details) getIntent().getSerializableExtra("value");
-            Log.i("Movie : ", movie.release_date);
+            movie = (MovieObject) getIntent().getSerializableExtra("value");
+            Log.i("Movie : ", movie.getRelease_date());
 
             DetailFragment fragment = new DetailFragment();
             fragment.setArguments(extras);

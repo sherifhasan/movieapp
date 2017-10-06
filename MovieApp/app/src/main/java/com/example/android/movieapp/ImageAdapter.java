@@ -8,6 +8,7 @@ import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
+import com.example.android.movieapp.Models.MovieObject;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
@@ -17,9 +18,9 @@ import java.util.List;
  */
 public class ImageAdapter extends BaseAdapter {
     private Context context;
-    public List<Movie_Details> imgitems;
+    public List<MovieObject> imgitems;
 
-    public ImageAdapter(Context context, List<Movie_Details> imgitems) {
+    public ImageAdapter(Context context, List<MovieObject> imgitems) {
         this.context = context;
         this.imgitems = imgitems;
     }
@@ -32,7 +33,7 @@ public class ImageAdapter extends BaseAdapter {
     }
 
     @Override
-    public Movie_Details getItem(int position) {
+    public MovieObject getItem(int position) {
         return imgitems.get(position);
     }
 
@@ -61,7 +62,7 @@ public class ImageAdapter extends BaseAdapter {
 
             holder = (ViewHolder) convertView.getTag();
         }
-        Picasso.with(context).load("http://image.tmdb.org/t/p/w342/" + getItem(position).poster_path).into(holder.imageview);
+        Picasso.with(context).load(context.getString(R.string.imagePath) + getItem(position).getPoster_path()).into(holder.imageview);
         return convertView;
     }
 

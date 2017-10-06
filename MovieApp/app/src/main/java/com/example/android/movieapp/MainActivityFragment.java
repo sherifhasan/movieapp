@@ -17,6 +17,10 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.android.movieapp.Models.MovieObject;
+import com.example.android.movieapp.Storege.DatabaseHelper;
+import com.example.android.movieapp.utility.PanesHandler;
+
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -36,10 +40,10 @@ import java.util.List;
  */
 public class MainActivityFragment extends Fragment {
     private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
-    public static Movie_Details[] MoviePoster;
+    public static MovieObject[] MoviePoster;
     String choice = "";
-    Movie_Details movie;
-    Movie_Details[] items, copy;
+    MovieObject movie;
+    MovieObject[] items, copy;
 
     GridView gridView;
     ImageAdapter image_adapter;
@@ -62,22 +66,15 @@ public class MainActivityFragment extends Fragment {
 
             @Override
             public void onItemClick(AdapterView<?> adapterView, View view, int position, long l) {
-
-
-                final Movie_Details movie = image_adapter.getItem(position);
+                final MovieObject movie = image_adapter.getItem(position);
                 ((PanesHandler) getActivity()).setSelectedName(movie);
-
-
             }
 
 
         });
 
-
-
         return rootview;
     }
-
 
 
     @Override
@@ -98,13 +95,11 @@ public class MainActivityFragment extends Fragment {
         return super.onOptionsItemSelected(item);
     }
 
-
     private void favourite() {
-        List<Movie_Details> list = new ArrayList<>();
+        List<MovieObject> list = new ArrayList<>();
         list = db.getAllMovies();
 
-
-        for (Movie_Details movie1 : list) {
+        for (MovieObject movie1 : list) {
             Log.i("Movie", movie1.getRelease_date());
         }
         image_adapter = new ImageAdapter(getActivity(), list);
@@ -127,23 +122,22 @@ public class MainActivityFragment extends Fragment {
     }
 
     @Override
-    public void onResume()
-    {
+    public void onResume() {
         super.onResume();
         numofseen++;
     }
 
     @Override
-        public void onStart() {
+    public void onStart() {
         super.onStart();
         updateMovie();
 
     }
+
     @Override
-    public void onSaveInstanceState(Bundle outState)
-    {
+    public void onSaveInstanceState(Bundle outState) {
         super.onSaveInstanceState(outState);
-        outState.putInt("numofseen",numofseen);
+        outState.putInt("numofseen", numofseen);
 
     }
 
@@ -161,7 +155,7 @@ public class MainActivityFragment extends Fragment {
         panesHandler = nameListener;
     }
 
-    public class MovieFetch extends AsyncTask<String, Void, Movie_Details[]> {
+    public class MovieFetch extends AsyncTask<String, Void, MovieObject[]> {
         private final String LOG_TAG = MovieFetch.class.getSimpleName();
 
 
@@ -169,17 +163,17 @@ public class MainActivityFragment extends Fragment {
 
         }
 
-        private Movie_Details[] MoviesJasonPrase(String moviesPosterStr) throws JSONException {
+        private MovieObject[] MoviesJasonPrase(String moviesPosterStr) throws JSONException {
 
 
             JSONObject moviesJson = new JSONObject(moviesPosterStr);
             JSONArray resultsArray = moviesJson.getJSONArray("results");
-            items = new Movie_Details[resultsArray.length()];
+            items = new MovieObject[resultsArray.length()];
 
             for (int i = 0; i < resultsArray.length(); i++) {
 
                 JSONObject movies = resultsArray.getJSONObject(i);
-                items[i] = new Movie_Details(movies.getString("id"), movies.getString("poster_path"), movies.getString("title"), movies.getString("vote_average"), movies.getString("release_date"), movies.getString("overview"));
+                items[i] = new MovieObject(movies.getString("id"), movies.getString("poster_path"), movies.getString("title"), movies.getString("vote_average"), movies.getString("release_date"), movies.getString("overview"));
             }
 
             return items;
@@ -187,7 +181,7 @@ public class MainActivityFragment extends Fragment {
 
 
         @Override
-        protected Movie_Details[] doInBackground(String... params) {
+        protected MovieObject[] doInBackground(String... params) {
 // These two need to be declared outside the try/catch
 // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
@@ -255,13 +249,11 @@ public class MainActivityFragment extends Fragment {
             } catch (final RuntimeException i) {
                 i.printStackTrace();
             }
-
-            // This will only happen if there was an error getting or parsing the forecast.
             return null;
         }
         @Override
-        protected void onPostExecute(Movie_Details[] result) {
-            copy =new Movie_Details[result.length];
+        protected void onPostExecute(MovieObject[] result) {
+            copy = new MovieObject[result.length];
             if (result != null) {
                 for (int i = 0; i < result.length; i++)
                     copy[i] = result[i];

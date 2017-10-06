@@ -18,6 +18,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.movieapp.Models.MovieObject;
+import com.example.android.movieapp.Storege.DatabaseHelper;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
@@ -37,14 +39,14 @@ import java.util.List;
  * A placeholder fragment containing a simple view.
  */
 public class DetailFragment extends Fragment {
-
-    TrailerAdapter traileradapt;
+    public static final String API_KEY = "";
+    TrailerAdapter trailerAdapter;
     String copy[];
-    Movie_Details movie_details;
+    MovieObject movie_object;
     String keys[];
     ListView listView1;
     ListView listView2;
-    ReviewAdapter reviewadapt;
+    ReviewAdapter reviewAdapter;
     boolean checkMovie = true;
     DatabaseHelper db;
     private ScrollView scrollView;
@@ -58,10 +60,10 @@ public class DetailFragment extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
-        movie_details = (Movie_Details) getArguments().getSerializable("value");
+        movie_object = (MovieObject) getArguments().getSerializable("value");
         scrollView = (ScrollView) rootView.findViewById(R.id.scroller);
 
-        if (movie_details != null) {
+        if (movie_object != null) {
             scrollView.setVisibility(View.VISIBLE);
         } else {
             scrollView.setVisibility(View.INVISIBLE);
@@ -83,30 +85,29 @@ public class DetailFragment extends Fragment {
         listView2 = (ListView) rootView.findViewById(R.id.review_list_view);
 
         ((TextView) rootView.findViewById(R.id.relese))
-                .setText(movie_details.release_date);
+                .setText(movie_object.getRelease_date());
         ((TextView) rootView.findViewById(R.id.overview))
-                .setText(movie_details.overview);
+                .setText(movie_object.getOverview());
         ((TextView) rootView.findViewById(R.id.vote_avg))
-                .setText(movie_details.vote_average);
+                .setText(movie_object.getVote_average());
         ImageView imageView = (ImageView) rootView.findViewById(R.id.detail_image);
-        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w342/" + movie_details.poster_path).into(imageView);
+        Picasso.with(getActivity()).load("http://image.tmdb.org/t/p/w342/" + movie_object.getPoster_path()).into(imageView);
 
         db = new DatabaseHelper(getActivity());
         Button button = (Button) rootView.findViewById(R.id.fav_btn);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Movie_Details> arrayList = new ArrayList();
+                List<MovieObject> arrayList = new ArrayList();
                 arrayList = db.getAllMovies();
                 for (int i = 0; i < arrayList.size(); i++) {
-                    if (arrayList.get(i).movie_id.equals(movie_details.movie_id)) {
+                    if (arrayList.get(i).getMovie_id().equals(movie_object.getMovie_id())) {
                         checkMovie = false;
                     }
-
                 }
 
                 if (checkMovie) {
-                    db.addMovie(new Movie_Details(movie_details.movie_id, movie_details.poster_path, movie_details.title, movie_details.vote_average, movie_details.release_date, movie_details.overview));
+                    db.addMovie(new MovieObject(movie_object.getMovie_id(), movie_object.getPoster_path(), movie_object.getTitle(), movie_object.getVote_average(), movie_object.getRelease_date(), movie_object.getOverview()));
                     Toast.makeText(getActivity(), "Movie added to Favourite", Toast.LENGTH_SHORT).show();
                 } else {
                     Toast.makeText(getActivity(), "Movie already in Favourite", Toast.LENGTH_SHORT).show();
@@ -191,16 +192,16 @@ public class DetailFragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             //add api key
-            final String API_key = "";
+
             final String API_param = "api_key";
-            //  final String link = "http://api.themoviedb.org/3/movie/" + movie_details.movie_id + "?";
+            //  final String link = "http://api.themoviedb.org/3/movie/" + movie_object.movie_id + "?";
 // Will contain the raw JSON response as a string.
             String movieJsonStr = null;
 
             final Uri.Builder builder = new Uri.Builder();
             builder.scheme("https").authority("api.themoviedb.org").appendPath("3")
-                    .appendPath("movie").appendPath(movie_details.movie_id).appendPath("videos")
-                    .appendQueryParameter(API_param, API_key);
+                    .appendPath("movie").appendPath(movie_object.getMovie_id()).appendPath("videos")
+                    .appendQueryParameter(API_param, API_KEY);
             try {
 
                 URL url = new URL(builder.toString());
@@ -265,8 +266,8 @@ public class DetailFragment extends Fragment {
                 for (int i = 0; i < result.length; i++) {
                     copy[i] = result[i];
                 }
-                traileradapt = new TrailerAdapter(getActivity(), result);
-                listView1.setAdapter(traileradapt);
+                trailerAdapter = new TrailerAdapter(getActivity(), result);
+                listView1.setAdapter(trailerAdapter);
 
 
             }
@@ -304,10 +305,8 @@ public class DetailFragment extends Fragment {
 // so that they can be closed in the finally block.
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
-            //add api key
-            final String API_key = "";
             final String API_param = "api_key";
-            //  final String link = "http://api.themoviedb.org/3/movie/" + movie_details.movie_id + "?";
+            //  final String link = "http://api.themoviedb.org/3/movie/" + movie_object.movie_id + "?";
 // Will contain the raw JSON response as a string.
             String movieJsonStr = null;
 
@@ -315,8 +314,8 @@ public class DetailFragment extends Fragment {
 
                 final Uri.Builder builder = new Uri.Builder();
                 builder.scheme("https").authority("api.themoviedb.org").appendPath("3")
-                        .appendPath("movie").appendPath(movie_details.movie_id).appendPath("reviews")
-                        .appendQueryParameter(API_param, API_key);
+                        .appendPath("movie").appendPath(movie_object.getMovie_id()).appendPath("reviews")
+                        .appendQueryParameter(API_param, API_KEY);
                 URL url = new URL(builder.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -378,8 +377,8 @@ public class DetailFragment extends Fragment {
             super.onPostExecute(null);
             String arr[] = new String[result.length];
             if (result != null) {
-                reviewadapt = new ReviewAdapter(getActivity(), result);
-                listView2.setAdapter(reviewadapt);
+                reviewAdapter = new ReviewAdapter(getActivity(), result);
+                listView2.setAdapter(reviewAdapter);
             }
 
         }
