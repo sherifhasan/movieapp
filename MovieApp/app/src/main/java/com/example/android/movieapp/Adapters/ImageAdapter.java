@@ -1,5 +1,5 @@
 
-package com.example.android.movieapp;
+package com.example.android.movieapp.Adapters;
 
 import android.content.Context;
 import android.view.LayoutInflater;
@@ -9,6 +9,7 @@ import android.widget.BaseAdapter;
 import android.widget.ImageView;
 
 import com.example.android.movieapp.Models.MovieObject;
+import com.example.android.movieapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;

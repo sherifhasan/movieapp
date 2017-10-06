@@ -17,6 +17,7 @@ import android.view.ViewGroup;
 import android.widget.AdapterView;
 import android.widget.GridView;
 
+import com.example.android.movieapp.Adapters.ImageAdapter;
 import com.example.android.movieapp.Models.MovieObject;
 import com.example.android.movieapp.Storege.DatabaseHelper;
 import com.example.android.movieapp.utility.PanesHandler;
@@ -34,6 +35,9 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
+
+import static com.example.android.movieapp.utility.Utility.API_KEY;
+import static com.example.android.movieapp.utility.Utility.isNetworkConnected;
 
 /**
  * A placeholder fragment containing a simple view.
@@ -58,8 +62,8 @@ public class MainActivityFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
-        View rootview = inflater.inflate(R.layout.fragment_main, container, false);
-        gridView = (GridView) rootview.findViewById(R.id.movieGrid);
+        View rootView = inflater.inflate(R.layout.fragment_main, container, false);
+        gridView = (GridView) rootView.findViewById(R.id.movieGrid);
         db = new DatabaseHelper(getActivity());
 
         gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -73,7 +77,7 @@ public class MainActivityFragment extends Fragment {
 
         });
 
-        return rootview;
+        return rootView;
     }
 
 
@@ -114,10 +118,10 @@ public class MainActivityFragment extends Fragment {
         choice = prefs.getString(getString(R.string.pref_key), getString(R.string.pref_popular_default));
         if (choice.equals("Favourite")) {
             favourite();
-        } else
-
-        {
-            MovieTask.execute(choice);
+        } else {
+            if (isNetworkConnected(getActivity())) {
+                MovieTask.execute(choice);
+            }
         }
     }
 
@@ -187,15 +191,14 @@ public class MainActivityFragment extends Fragment {
             HttpURLConnection urlConnection = null;
             BufferedReader reader = null;
             // add API key
-            final String API_key = "";
             final String API_param = "api_key";
-            final String link = "http://api.themoviedb.org/3/movie/" + choice + "?";
+            final String link = "http://api.themoviedb.org/3/movie/" + choice + "?" + "page" + "?";
 // Will contain the raw JSON response as a string.
             String movieJsonStr = null;
 
             try {
 
-                Uri buildUri = Uri.parse(link).buildUpon().appendQueryParameter(API_param, API_key).build();
+                Uri buildUri = Uri.parse(link).buildUpon().appendQueryParameter(API_param, API_KEY).build();
                 URL url = new URL(buildUri.toString());
                 urlConnection = (HttpURLConnection) url.openConnection();
                 urlConnection.setRequestMethod("GET");
@@ -251,6 +254,7 @@ public class MainActivityFragment extends Fragment {
             }
             return null;
         }
+
         @Override
         protected void onPostExecute(MovieObject[] result) {
             copy = new MovieObject[result.length];

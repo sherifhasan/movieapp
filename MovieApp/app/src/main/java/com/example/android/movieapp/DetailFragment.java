@@ -18,6 +18,8 @@ import android.widget.ScrollView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.example.android.movieapp.Adapters.ReviewAdapter;
+import com.example.android.movieapp.Adapters.TrailerAdapter;
 import com.example.android.movieapp.Models.MovieObject;
 import com.example.android.movieapp.Storege.DatabaseHelper;
 import com.squareup.picasso.Picasso;
@@ -35,11 +37,13 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
 
+import static com.example.android.movieapp.utility.Utility.API_KEY;
+import static com.example.android.movieapp.utility.Utility.isNetworkConnected;
+
 /**
  * A placeholder fragment containing a simple view.
  */
 public class DetailFragment extends Fragment {
-    public static final String API_KEY = "";
     TrailerAdapter trailerAdapter;
     String copy[];
     MovieObject movie_object;
@@ -156,8 +160,10 @@ public class DetailFragment extends Fragment {
 
     public void onStart() {
         super.onStart();
-        fetchTrailers();
-        fetchReviews();
+        if (isNetworkConnected(getActivity())) {
+            fetchTrailers();
+            fetchReviews();
+        }
     }
 
 
@@ -289,6 +295,7 @@ public class DetailFragment extends Fragment {
             JSONObject moviesJson = new JSONObject(moviesPosterStr);
             JSONArray resultsArray = moviesJson.getJSONArray("results");
             keys = new String[resultsArray.length()];
+
             for (int i = 0; i < resultsArray.length(); i++) {
 
                 JSONObject movies = resultsArray.getJSONObject(i);
@@ -367,8 +374,6 @@ public class DetailFragment extends Fragment {
             } catch (final RuntimeException i) {
                 i.printStackTrace();
             }
-
-
             return null;
         }
 

@@ -1,4 +1,4 @@
-package com.example.android.movieapp;
+package com.example.android.movieapp.Adapters;
 
 
 import android.content.Context;
@@ -8,6 +8,8 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
+
+import com.example.android.movieapp.R;
 
 import java.util.Arrays;
 
