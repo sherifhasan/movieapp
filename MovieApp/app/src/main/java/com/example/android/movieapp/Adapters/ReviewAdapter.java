@@ -2,38 +2,74 @@ package com.example.android.movieapp.Adapters;
 
 
 import android.content.Context;
+import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
 import android.widget.TextView;
 
-
+import com.example.android.movieapp.Models.Review;
 import com.example.android.movieapp.R;
 
-import java.util.Arrays;
+import java.util.ArrayList;
+import java.util.List;
 
-public class ReviewAdapter extends ArrayAdapter<String> {
+import butterknife.BindView;
+import butterknife.ButterKnife;
 
-    private String[] Reviews;
+public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
+    private List<Review> mReviews;
 
-    public ReviewAdapter(final Context context, final String[] reviews) {
-        super(context, 0, Arrays.asList(reviews));
-        Reviews = reviews;
+    public void updateAdapter(List<Review> reviews) {
+
+        if (reviews != null) {
+            this.mReviews = reviews;
+        } else {
+            this.mReviews = new ArrayList<>();
+        }
+        notifyDataSetChanged();
+    }
+
+    public ReviewAdapter() {
+
     }
 
     @Override
-    public View getView(final int position, View convertView, final ViewGroup parent) {
-        if (convertView == null) {
-            convertView = LayoutInflater.from(getContext())
-                    .inflate(R.layout.trailer_list_item, parent, false);
+    public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+        Context context = parent.getContext();
+        int layoutPhotoItem = R.layout.review_list_item;
+        LayoutInflater inflater = LayoutInflater.from(context);
+        View view = inflater.inflate(layoutPhotoItem, parent, false);
+        return new MyViewHolder(view);
+    }
+
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+
+        final Review review = mReviews.get(position);
+        holder.reviewAuthorTextView.setText(review.getAuthor());
+        holder.reviewContentTextView.setText(review.getContent());
+    }
+
+
+    @Override
+    public int getItemCount() {
+        return mReviews == null ? 0 : mReviews.size();
+    }
+
+    class MyViewHolder extends RecyclerView.ViewHolder {
+
+        @BindView(R.id.review_author)
+        TextView reviewAuthorTextView;
+
+        @BindView(R.id.review_content)
+        TextView reviewContentTextView;
+
+        MyViewHolder(View convertView) {
+            super(convertView);
+
+            ButterKnife.bind(this, convertView);
         }
-
-        final TextView reviewText = (TextView) convertView.findViewById(R.id.trailer_textview);
-
-        reviewText.setText(Reviews[position]);
-
-        return convertView;
     }
 }
-

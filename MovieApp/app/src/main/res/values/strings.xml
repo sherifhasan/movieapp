@@ -13,17 +13,19 @@
 
     </string-array>
     <string-array name="pref_sort_entries">
-        <item title="top_rated">Favourite</item>
+        <item title="Favourite">Favourite</item>
         <item title="top_rated">top_rated</item>
         <item title="popular">popular</item>
 
 
     </string-array>
 
-    <string name="mark_as_favourite">Mark as Favourite</string>
+    <string name="mark_as_favourite">Favourite</string>
     <string name="trailers">Trailers</string>
     <string name="reviews">Reviews</string>
     <string name="Favourite">Favourite</string>
-    <string name="imagePath">http://image.tmdb.org/t/p/w342/</string>
     <string name="OK">OK</string>
+    <string name="youtube_link">http://www.youtube.com/watch?v=</string>
+    <string name="trailer">Trailer %d</string>
+    <string name="mark_as_UNfavourite">Un Favourite</string>
 </resources>

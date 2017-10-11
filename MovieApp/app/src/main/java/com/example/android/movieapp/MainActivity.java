@@ -91,8 +91,6 @@ public class MainActivity extends AppCompatActivity implements PanesHandler {
             Intent intent = new Intent(this, DetailsActivity.class);
             intent.putExtra("value", movie);
             startActivity(intent);
-
         }
-
     }
 }

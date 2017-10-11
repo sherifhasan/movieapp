@@ -1,14 +1,22 @@
 package com.example.android.movieapp.Models;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.io.Serializable;
 
 
-public class MovieObject implements Serializable{
+public class MovieObject implements Serializable {
+    @SerializedName("overview")
     private String overview;
+    @SerializedName("release_date")
     private String release_date;
+    @SerializedName("id")
     private String movie_id;
+    @SerializedName("poster_path")
     private String poster_path;
+    @SerializedName("title")
     private String title;
+    @SerializedName("vote_average")
     private String vote_average;
 
     public MovieObject() {
