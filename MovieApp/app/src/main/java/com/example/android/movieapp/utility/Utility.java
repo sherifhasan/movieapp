@@ -17,7 +17,7 @@ import java.util.List;
 import static com.example.android.movieapp.Storege.DatabaseContract.MoviesEntry.TABLE_Movies;
 
 public class Utility {
-    public static final String API_KEY = "45675498292e08e0720e1091fa4fb757";
+    public static final String API_KEY = "";
     public static final String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w342";
 
 
