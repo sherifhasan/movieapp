@@ -16,7 +16,7 @@ public class DetailsActivity extends AppCompatActivity {
         if (null == savedInstanceState) {
             Bundle extras = getIntent().getExtras();
 
-            movie = (MovieObject) getIntent().getSerializableExtra("value");
+            movie = getIntent().getParcelableExtra("value");
             Log.i("Movie : ", movie.getRelease_date());
 
             DetailFragment fragment = new DetailFragment();

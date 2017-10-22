@@ -49,7 +49,8 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="16dp"
-                        android:layout_marginLeft="8dp"
+                        android:layout_marginLeft="@dimen/medium_margin"
+                        android:layout_marginStart="@dimen/medium_margin"
                         android:textSize="16sp" />
 
 
@@ -59,16 +60,17 @@
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:text="@string/mark_as_favourite"
-                        android:visibility="gone"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone" />
+
                     <Button
                         android:id="@+id/unfav_btn"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginBottom="8dp"
                         android:text="@string/mark_as_UNfavourite"
-                        android:visibility="gone"
-                        android:textSize="16sp" />
+                        android:textSize="16sp"
+                        android:visibility="gone" />
 
                 </LinearLayout>
             </LinearLayout>
@@ -77,14 +79,15 @@
                 android:id="@+id/overview"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginBottom="8dp"
-                android:layout_marginLeft="8dp" />
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_marginStart="@dimen/medium_margin"
+                android:layout_marginLeft="@dimen/medium_margin" />
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:background="@android:color/black" />
 
             <LinearLayout
@@ -105,14 +108,15 @@
                     android:id="@+id/trailer_recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:layout_marginLeft="8dp" />
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginLeft="@dimen/medium_margin" />
             </LinearLayout>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="1dp"
-                android:layout_marginBottom="8dp"
-                android:layout_marginTop="8dp"
+                android:layout_marginBottom="@dimen/medium_margin"
+                android:layout_marginTop="@dimen/medium_margin"
                 android:background="@android:color/black" />
 
             <LinearLayout
@@ -133,7 +137,9 @@
                     android:id="@+id/review_Recycler_view"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="8dp" />
+                    android:layout_marginStart="@dimen/medium_margin"
+                    android:layout_marginLeft="@dimen/medium_margin" />
+
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

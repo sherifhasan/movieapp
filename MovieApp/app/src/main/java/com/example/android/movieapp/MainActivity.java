@@ -80,7 +80,7 @@ public class MainActivity extends AppCompatActivity implements PanesHandler {
             // fragment transaction.
             DetailFragment fragment = new DetailFragment();
             Bundle args = new Bundle();
-            args.putSerializable("value", movie);
+            args.putParcelable("value", movie);
             fragment.setArguments(args);
 
             getSupportFragmentManager().beginTransaction()

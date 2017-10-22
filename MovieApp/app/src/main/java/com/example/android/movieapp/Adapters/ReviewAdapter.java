@@ -20,6 +20,10 @@ import butterknife.ButterKnife;
 public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHolder> {
     private List<Review> mReviews;
 
+    public ReviewAdapter() {
+
+    }
+
     public void updateAdapter(List<Review> reviews) {
 
         if (reviews != null) {
@@ -28,10 +32,6 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.MyViewHold
             this.mReviews = new ArrayList<>();
         }
         notifyDataSetChanged();
-    }
-
-    public ReviewAdapter() {
-
     }
 
     @Override

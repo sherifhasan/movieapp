@@ -7,6 +7,7 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -42,6 +43,8 @@ import static com.example.android.movieapp.utility.Utility.isNetworkConnected;
 
 
 public class DetailFragment extends Fragment {
+
+    private final String LOG_TAG = DetailFragment.class.getSimpleName();
     TrailerAdapter mTrailerAdapter;
     List<Review> mReviews;
     List<Trailer> mTrailers;
@@ -51,6 +54,7 @@ public class DetailFragment extends Fragment {
     @BindView(R.id.review_Recycler_view)
     RecyclerView mReviewsRecyclerView;
     ReviewAdapter mReviewAdapter;
+    @BindView(R.id.scroller)
     ScrollView scrollView;
     int mCurrentPostion;
     RecyclerView.LayoutManager mLayoutManagerTrailers;
@@ -69,7 +73,6 @@ public class DetailFragment extends Fragment {
     Button mUnFavouriteButton;
 
     public DetailFragment() {
-
     }
 
     @Override
@@ -77,9 +80,7 @@ public class DetailFragment extends Fragment {
                              Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_detail, container, false);
         ButterKnife.bind(this, rootView);
-        mMovie = (MovieObject) getArguments().getSerializable("value");
-        scrollView = (ScrollView) rootView.findViewById(R.id.scroller);
-
+        mMovie =  getArguments().getParcelable("value");
         if (mMovie != null) {
             scrollView.setVisibility(View.VISIBLE);
         } else {
@@ -126,8 +127,6 @@ public class DetailFragment extends Fragment {
                 }
             }
         });
-
-
         mUnFavouriteButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -156,10 +155,8 @@ public class DetailFragment extends Fragment {
         }
     }
 
-
     public void getReviewsFromApi() {
         if (isNetworkConnected(getContext())) {
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<ReviewsResponse> call = apiService.getReviews(mMovie.getMovie_id(), API_KEY);
             call.enqueue(new Callback<ReviewsResponse>() {
@@ -174,6 +171,7 @@ public class DetailFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<ReviewsResponse> call, Throwable t) {
+                    Log.d(LOG_TAG, t.toString());
                 }
             });
         }
@@ -181,7 +179,6 @@ public class DetailFragment extends Fragment {
 
     public void getTrailersFromApi() {
         if (isNetworkConnected(getContext())) {
-
             ApiInterface apiService = ApiClient.getClient().create(ApiInterface.class);
             Call<TrailersResponse> call = apiService.getTrailers(mMovie.getMovie_id(), API_KEY);
             call.enqueue(new Callback<TrailersResponse>() {
@@ -196,7 +193,7 @@ public class DetailFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<TrailersResponse> call, Throwable t) {
-
+                    Log.d(LOG_TAG, t.toString());
                 }
             });
         }

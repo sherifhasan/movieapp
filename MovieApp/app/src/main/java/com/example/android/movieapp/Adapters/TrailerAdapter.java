@@ -20,12 +20,11 @@ import butterknife.ButterKnife;
 
 
 public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MyViewHolder> {
+    Listener mListener;
     private List<Trailer> mTrailers;
 
-    Listener mListener;
+    public TrailerAdapter() {
 
-    public static interface Listener {
-        void onClick(Trailer trailer);
     }
 
     public void setListener(Listener mListner) {
@@ -42,10 +41,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MyViewHo
         notifyDataSetChanged();
     }
 
-    public TrailerAdapter() {
-
-    }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -54,7 +49,6 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MyViewHo
         View view = inflater.inflate(layoutPhotoItem, parent, false);
         return new MyViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
@@ -71,10 +65,14 @@ public class TrailerAdapter extends RecyclerView.Adapter<TrailerAdapter.MyViewHo
 
     }
 
-
     @Override
     public int getItemCount() {
         return mTrailers == null ? 0 : mTrailers.size();
+    }
+
+
+    public static interface Listener {
+        void onClick(Trailer trailer);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

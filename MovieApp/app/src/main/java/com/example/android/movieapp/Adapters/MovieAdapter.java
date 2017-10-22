@@ -21,12 +21,11 @@ import static com.example.android.movieapp.utility.Utility.BASE_POSTER_URL;
 
 
 public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder> {
+    Listener mListener;
     private List<MovieObject> mMovies;
 
-    Listener mListener;
+    public MovieAdapter() {
 
-    public static interface Listener {
-        void onClick(MovieObject movie);
     }
 
     public void setListener(Listener mListner) {
@@ -43,10 +42,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         notifyDataSetChanged();
     }
 
-    public MovieAdapter() {
-
-    }
-
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         Context context = parent.getContext();
@@ -55,7 +50,6 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
         View view = inflater.inflate(layoutPhotoItem, parent, false);
         return new MyViewHolder(view);
     }
-
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
@@ -79,10 +73,14 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.MyViewHolder
 
     }
 
-
     @Override
     public int getItemCount() {
         return mMovies == null ? 0 : mMovies.size();
+    }
+
+
+    public static interface Listener {
+        void onClick(MovieObject movie);
     }
 
     class MyViewHolder extends RecyclerView.ViewHolder {

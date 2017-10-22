@@ -9,7 +9,7 @@
         android:id="@+id/review_author"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="8dp"
+        android:layout_marginBottom="@dimen/medium_margin"
         android:textColor="@color/colorPrimary"
         android:textSize="20sp" />
 
@@ -17,7 +17,8 @@
         android:id="@+id/review_content"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="4dp"
+        android:layout_marginLeft="@dimen/small_margin"
+        android:layout_marginStart="@dimen/small_margin"
         android:textSize="16sp" />
 </LinearLayout>
 

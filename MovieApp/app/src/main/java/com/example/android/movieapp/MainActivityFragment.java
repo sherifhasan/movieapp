@@ -7,7 +7,6 @@ import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
-import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
@@ -15,7 +14,6 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
-import android.view.WindowManager;
 
 import com.example.android.movieapp.Adapters.MovieAdapter;
 import com.example.android.movieapp.Models.MovieObject;
@@ -34,14 +32,16 @@ import retrofit2.Call;
 import retrofit2.Callback;
 import retrofit2.Response;
 
-import static android.content.Context.WINDOW_SERVICE;
 import static com.example.android.movieapp.utility.Utility.API_KEY;
+import static com.example.android.movieapp.utility.Utility.getSpanCount;
 import static com.example.android.movieapp.utility.Utility.isNetworkConnected;
 
 /**
  * A placeholder fragment containing a simple view.
  */
 public class MainActivityFragment extends Fragment {
+
+    private static int SPAN_COUNT;
     private final String LOG_TAG = MainActivityFragment.class.getSimpleName();
     String choice = "";
     List<MovieObject> mMovies;
@@ -50,29 +50,19 @@ public class MainActivityFragment extends Fragment {
     MovieAdapter mMovieAdapter;
     PanesHandler panesHandler;
     int mCurrentPostion;
-
     private RecyclerView.LayoutManager mLayoutManager;
-    private static final int IMAGE_SIZE = 120;
-    private static int COLUMNS_NUMBER;
 
     public MainActivityFragment() {
     }
-
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              final Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_main, container, false);
         ButterKnife.bind(this, rootView);
-
-        DisplayMetrics dm = new DisplayMetrics();
-        WindowManager windowManager = (WindowManager) getActivity().getSystemService(WINDOW_SERVICE);
-        windowManager.getDefaultDisplay().getMetrics(dm);
-        int widthInDP = Math.round(dm.widthPixels / dm.density);
-
-        COLUMNS_NUMBER = widthInDP / IMAGE_SIZE;
+        SPAN_COUNT = getSpanCount(getContext());
         mMovieAdapter = new MovieAdapter();
-        mLayoutManager = new GridLayoutManager(getActivity(), COLUMNS_NUMBER);
+        mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
         mRecyclerView.setAdapter(mMovieAdapter);
@@ -82,11 +72,8 @@ public class MainActivityFragment extends Fragment {
                 ((PanesHandler) getActivity()).setSelectedName(movie);
             }
         });
-
-
         return rootView;
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -107,13 +94,11 @@ public class MainActivityFragment extends Fragment {
     }
 
     private void favourite() {
-        List<MovieObject> list = new ArrayList<>();
-        list = Utility.getAllMoviesFromDatabase(getContext());
-
-        for (MovieObject movie1 : list) {
-            Log.i("Movie", movie1.getRelease_date());
+        List<MovieObject> list = new ArrayList();
+        if (Utility.getAllMoviesFromDatabase(getContext()) != null) {
+            list = Utility.getAllMoviesFromDatabase(getContext());
+            mMovieAdapter.updateAdapter(list);
         }
-        mMovieAdapter.updateAdapter(list);
     }
 
     private void updateMovie() {
@@ -135,7 +120,6 @@ public class MainActivityFragment extends Fragment {
     public void onStart() {
         super.onStart();
         updateMovie();
-
     }
 
     @Override
@@ -174,6 +158,7 @@ public class MainActivityFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<MoviesResponse> call, Throwable t) {
+                    Log.d(LOG_TAG, t.toString());
                 }
             });
 
@@ -197,11 +182,10 @@ public class MainActivityFragment extends Fragment {
 
                 @Override
                 public void onFailure(Call<MoviesResponse> call, Throwable t) {
-
+                    Log.d(LOG_TAG, t.toString());
                 }
             });
 
         }
     }
-
 }

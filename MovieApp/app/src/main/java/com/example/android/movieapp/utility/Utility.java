@@ -5,7 +5,9 @@ import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.net.ConnectivityManager;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.WindowManager;
 
 import com.example.android.movieapp.Models.MovieObject;
 import com.example.android.movieapp.Storege.DatabaseContract;
@@ -14,16 +16,30 @@ import com.example.android.movieapp.Storege.DatabaseHelper;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.WINDOW_SERVICE;
 import static com.example.android.movieapp.Storege.DatabaseContract.MoviesEntry.TABLE_Movies;
 
 public class Utility {
+
     public static final String API_KEY = "";
     public static final String BASE_POSTER_URL = "http://image.tmdb.org/t/p/w342";
+    private static final int IMAGE_SIZE = 120;
 
 
     public static boolean isNetworkConnected(Context context) {
         ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
         return cm.getActiveNetworkInfo() != null;
+    }
+
+    public static int getSpanCount(Context context) {
+        int spanCount;
+        DisplayMetrics dm = new DisplayMetrics();
+        WindowManager windowManager = (WindowManager) context.getSystemService(WINDOW_SERVICE);
+        windowManager.getDefaultDisplay().getMetrics(dm);
+        int widthInDP = Math.round(dm.widthPixels / dm.density);
+        spanCount = widthInDP / IMAGE_SIZE;
+
+        return spanCount;
     }
 
     public static boolean IsMovieInDatabase(Context context, MovieObject movie) {
